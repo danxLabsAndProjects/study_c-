@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{303A921F-5664-4EEA-B60F-76317D02718D}</ProjectGuid>
+    <ProjectGuid>{E95D5E53-CB5E-43BC-9053-AC999F963475}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Regex</RootNamespace>
-    <AssemblyName>Regex</AssemblyName>
+    <RootNamespace>CodeSnippetsEx</RootNamespace>
+    <AssemblyName>CodeSnippetsEx</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -44,8 +44,6 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RegexFuncForExample.cs" />
-    <Compile Include="ResultString.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
