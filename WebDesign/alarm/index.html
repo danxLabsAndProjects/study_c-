@@ -1,0 +1,83 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>MyTestPage</title>
+    <meta name="author" content="Герасимчук Данило"/>
+
+</head>
+<body>
+    <div id="alarm">
+        Выберите дату и время <br />
+        <input type="datetime-local" id="date-alarm"
+                name="party-time" value="2018-11-05T19:39"
+                min="2018-11-01T00:00" max="2018-12-01T00:00"/>
+        <button id="confirm">создать будильник</button>
+
+    </div>
+    <script>
+        var count = 0;
+
+        var alarm = (function () {
+            var currentAllarms = [];
+            this.confirmClick = function() {
+                let dateValue = new Date(document.getElementById("date-alarm").value);
+                currentAllarms.push(dateValue);
+                let appendedEl = document.createElement("p");
+                let btn = document.createElement("button");
+                btn.innerHTML = "delete";
+                btn.id = window.count;
+                
+                appendedEl.innerHTML += dateValue;
+                appendedEl.appendChild(btn);
+                let s = document.getElementById("current-alarms");
+                s.appendChild(appendedEl);
+                let id = window.count;
+                var b = document.getElementById(+id);
+
+                b.addEventListener("click", function () {
+                    let currEl = document.activeElement.parentNode;
+                    let el2 = document.getElementById("current-alarms");
+                    el2.removeChild(currEl);    
+                });
+                window.count++;
+            }
+
+            var checkAlarm = setTimeout(function check() {
+                for (i = 0; i < currentAllarms.length; i++) {
+                    if (currentAllarms[i].getTime) {
+                        let dateCurr = new Date;
+                        if (currentAllarms[i].getTime() - dateCurr.getTime() < 60000 &&
+                            currentAllarms[i].getTime() - dateCurr.getTime() > 1) {
+                            alert("WakeUp");
+                            currentAllarms.splice(i, i);
+                            let elemsToDel = [];
+                            let currEl = document.getElementsByName("p").forEach(function (i) {
+                                if (new Date(i.innerHTML) === currentAllarms[i]) {
+                                    elemsToDel.push(i);
+                                }
+                            });
+                            let el2 = document.getElementById("current-alarms");
+                            for (j = 0; i < elemsToDel.length; j++) {
+                                el2.removeChild(elemsToDel[i]);
+                            }
+                        }
+                    }
+                };
+                checkAlarm = setTimeout(check, 30000);
+            }, 30000);
+
+
+            return this;
+        }());
+
+        var confBtn = document.getElementById("confirm");
+        confBtn.addEventListener("click", alarm.confirmClick);
+
+        
+    </script>
+
+    <div id="current-alarms">
+    </div>
+</body>
+</html>

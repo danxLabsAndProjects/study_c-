@@ -1,0 +1,125 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>MyTestPage</title>
+    <meta name="author" content="Герасимчук Данило" />
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+</head>
+<body>
+    <div id="alarm">
+        Выберите дату и время <br />
+        <input type="datetime-local" id="date-alarm"
+                name="party-time" value="2018-12-12T02:02"
+                min="2018-12-01T00:00" max="2019-01-01T00:00"/>
+        <button id="confirm">создать будильник</button><br/>
+        <button id="saveAlarms">сохранить будильники</button><br/>
+        <button id="getOldAlarms">загрузить будильники</button>
+
+    </div>
+    <script>
+        var count = 0;
+
+        var alarm = (function () {
+            var currentAllarms = [];
+            this.confirmClick = function() {
+                let dateValue = new Date(document.getElementById("date-alarm").value);
+                currentAllarms.push(dateValue);
+                createElsInDiv(dateValue);
+            }
+
+            function createElsInDiv(data) {
+                let appendedEl = document.createElement("p");
+                let btn = document.createElement("button");
+                btn.innerHTML = "delete";
+                btn.id = window.count;
+
+                appendedEl.innerHTML += data;
+                appendedEl.appendChild(btn);
+                let s = document.getElementById("current-alarms");
+                s.appendChild(appendedEl);
+                let id = window.count;
+                var b = document.getElementById(+id);
+
+                b.addEventListener("click", function () {
+                    let currEl = document.activeElement.parentNode;
+                    let el2 = document.getElementById("current-alarms");
+                    let index = currentAllarms.indexOf(data);
+                    currentAllarms.splice(index, index);
+                    el2.removeChild(currEl);
+                });
+                window.count++;
+            }
+
+            this.loadAlarms = function () {
+                fetch("/data.json").then(function (response) {
+                    if (response.ok) {
+                        response.json().then(function (data) {
+                            let buff = data;
+                            for (i = 0; i < buff.length; i++) {
+                                currentAllarms.push(new Date(buff[i]));
+                            }
+                        });
+                        createDivDataFromArray();
+                        return;
+                    }
+                    alert(response.statusText);
+                })
+            }
+
+            function createDivDataFromArray() {
+                for (i = 0; i < currentAllarms.length; i++) {
+                    createElsInDiv(currentAllarms[i]);
+                }
+            }
+
+
+            this.saveAlarms = function () {
+                $.post("2.php", { data : JSON.stringify(currentAllarms) }, function (data) { });
+            }
+
+            var checkAlarm = setTimeout(function check() {
+                for (i = 0; i < currentAllarms.length; i++) {
+                    if (currentAllarms[i].getTime) {
+                        let dateCurr = new Date;
+                        if (currentAllarms[i].getTime() - dateCurr.getTime() < 60000 &&
+                            currentAllarms[i].getTime() - dateCurr.getTime() > 1) {
+                            alert("WakeUp");
+                            //let currentAlarmDate = currentAllarms[i];
+                            currentAllarms.splice(i, i);
+                            //let elemsToDel = [];
+                            //let elemsP = document.getElementsByTagName("p");
+                            //for (k = 0; k < elemsP.length; k++) {
+                            //    if (new Date(elemsP[k].innerHTML.slice(0, elemsP[k].innerHTML.indexOf("<"))) === new Data(currentAlarmDate)) {
+                            //        elemsToDel.push(i);
+                            //    }
+                            //}
+                            //let el2 = document.getElementById("current-alarms");
+                            //for (j = 0; i < elemsToDel.length; j++) {
+                            //    el2.removeChild(elemsToDel[i]);
+                            //}
+                        }
+                    }
+                };
+                checkAlarm = setTimeout(check, 30000);
+            }, 30000);
+
+
+            return this;
+        }());
+
+        var confBtn = document.getElementById("confirm");
+        confBtn.addEventListener("click", alarm.confirmClick);
+
+        var saveData = document.getElementById("saveAlarms");
+        saveData.addEventListener("click", alarm.saveAlarms)
+
+        var oldAlarms = document.getElementById("getOldAlarms")
+        oldAlarms.addEventListener("click", alarm.loadAlarms);
+        
+    </script>
+
+    <div id="current-alarms">
+    </div>
+</body>
+</html>

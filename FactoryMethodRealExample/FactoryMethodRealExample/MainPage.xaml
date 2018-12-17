@@ -1,0 +1,17 @@
+﻿<Page
+    x:Class="FactoryMethodRealExample.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:FactoryMethodRealExample"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" >
+        <RichEditBox HorizontalAlignment="Left" Margin="157,106,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.484,0.453" Height="526" Width="1002"/>
+        <ComboBox HorizontalAlignment="Left" Margin="56,30,0,0" VerticalAlignment="Top" Width="249"/>
+        <Button Content="Открыть" HorizontalAlignment="Left" Margin="444,30,0,0" VerticalAlignment="Top" />
+        <Button Content="Созадть" HorizontalAlignment="Left" Margin="592,30,0,0" VerticalAlignment="Top"/>
+
+    </Grid>
+</Page>
